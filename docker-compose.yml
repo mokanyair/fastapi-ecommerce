@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: MyNewPassword123
+      POSTGRES_DB: fastapi
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5  
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"    
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+      payment-service:
+        condition: service_started
+    environment:
+      POSTGRES_SERVER: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: MyNewPassword123
+      POSTGRES_DB: fastapi
+    ports:
+      - "8000:8000"
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8002:8000"
