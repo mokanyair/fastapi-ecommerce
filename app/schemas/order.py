@@ -8,12 +8,12 @@ class CartItem(BaseModel):
 
 
 class OrderCreate(BaseModel):
-    user_id: int = Field(..., gt=0)
+    session_id: str
 
 
 class OrderOut(BaseModel):
     id: int
-    user_id: int
+    session_id: str
     total_amount: float
     status: str
 

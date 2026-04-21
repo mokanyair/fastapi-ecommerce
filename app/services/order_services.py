@@ -5,27 +5,29 @@ from app.integrations.cart_cleints import get_cart
 #from app.integrations.payment_client import process_payment
 from app.integrations.event_bus import publish_event
 from app.integrations.payment_client import process_payment
+from app.integrations.product_client import get_product
 
 logger = logging.getLogger(__name__)
 
 
-def create_order(db: Session, user_id: int):
-    logger.info(f"Creating order for user {user_id}")
+def create_order(db: Session, session_id: str):
+    logger.info(f"Creating order for session {session_id}")
 
     # 1. Fetch cart
-    cart = get_cart(user_id)
+    cart = get_cart(session_id)
 
-    items = cart.get("items", [])
+    items = cart.get("cart", [])
     if not items:
         raise ValueError("Cart is empty")
 
     # 2. Calculate total
     total_amount = sum(
-        item["price"] * item["quantity"] for item in items
+        get_product(item["product_id"])["price"] * item["quantity"]
+        for item in items
     )
 
     # 3. Create order
-    order = crud_order.create_order(db, user_id, total_amount)
+    order = crud_order.create_order(db, session_id, total_amount)
 
     # 4. Process payment
     payment_result = process_payment(order.id, total_amount)

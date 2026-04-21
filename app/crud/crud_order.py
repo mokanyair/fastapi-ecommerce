@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from app.models.order import Order
 
-def create_order(db: Session, user_id: int, total_amount: float) -> Order:
+def create_order(db: Session, session_id: str, total_amount: float) -> Order:
     order = Order(
-        user_id=user_id,
+        session_id=session_id,
         total_amount=total_amount,
         status="PENDING",
     )

@@ -4,7 +4,7 @@ from app.api.routes import cart, products, order
 from app.db.init_db import init_db
 import logging
 
-logging.logging.disable(logging.CRITICAL)
+logging.basicConfig(level=logging.CRITICAL)
 
 app = FastAPI()
 

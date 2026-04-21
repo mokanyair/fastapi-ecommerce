@@ -40,7 +40,7 @@ def clear_cart(session_id: str):
     redis_client.delete(key)   
     
 def validate_product(product_id: int):
-    response = requests.get(f"http://localhost:8000/api/products/{product_id}")
+    response = requests.get(f"http://app:8000/api/products/{product_id}")
     
     if response.status_code != 200:
         raise Exception(f"Product {product_id} not found")

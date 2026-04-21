@@ -14,7 +14,7 @@ services:
   redis:
     image: redis:7
     ports:
-      - "6379:6379"    
+      - "6379:6379"  
 
   app:
     build: .
@@ -35,3 +35,5 @@ services:
     build: ./payment-service
     ports:
       - "8002:8000"
+
+  

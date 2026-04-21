@@ -14,6 +14,6 @@ def create_order_endpoint(
     db: Session = Depends(get_db),
 ):
     try:
-        return create_order(db, order_in.user_id)
+        return create_order(db, order_in.session_id)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
